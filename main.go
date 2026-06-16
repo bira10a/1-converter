@@ -7,7 +7,7 @@ func main() {
 	const EUR = USD * 1.16
 	const RUB = USD * 72.14
 
-	EURfromRUM := EUR * RUB
+	EURfromRUM := RUB / EUR
 
 	fmt.Println(EURfromRUM)
 }

@@ -23,11 +23,31 @@ func converter() (sum float64) {
 	var lastVal string
 	var value float64
 
-	for {
-		fmt.Print("Выберите исходную валюту:")
-		fmt.Scan(&firstVal)
+	fmt.Print("Выберите исходную валюту:")
+	firstVal = getCurrency()
 
-		switch firstVal {
+	value = getAmount()
+
+	fmt.Print("Выберите вторую валюту:")
+	lastVal = getCurrency()
+	if firstVal == lastVal {
+		fmt.Println("Выберите вторую валюту, отличную от первой:")
+		lastVal = getCurrency()
+	}
+
+	sum = summConverter(firstVal, value, lastVal)
+
+	return sum
+
+}
+
+func getCurrency() string {
+	var value string
+
+	for {
+		fmt.Scan(&value)
+
+		switch value {
 		case "USD":
 			fmt.Println("Вы выбрали доллары")
 		case "EUR":
@@ -35,69 +55,46 @@ func converter() (sum float64) {
 		case "RUB":
 			fmt.Println("Вы выбрали рубли")
 		default:
-			fmt.Println("Выберите исходную валюту:")
-			fmt.Scan(&firstVal)
+			continue
 		}
 
 		break
 	}
 
+	return value
+}
+
+func getAmount() float64 {
+	var value float64
 	for {
 		fmt.Print("Выберите число:")
 		fmt.Scan(&value)
 
 		if value == 0 || value < 0 {
-			fmt.Print("Выберите число pliz:")
-			fmt.Scan(&value)
+			continue
 		}
 		fmt.Println("Вы выбрали", value)
 		break
 	}
+	return value
+}
 
-	for {
-		fmt.Print("Выберите вторую валюту:")
-		fmt.Scan(&lastVal)
-
-		if firstVal == lastVal {
-			fmt.Println("Выберите вторую валюту, отличную от первой:")
-			fmt.Scan(&lastVal)
-		}
-
-		switch lastVal {
-		case "USD":
-			fmt.Println("Вы выбрали второй валютой доллары")
-		case "EUR":
-			fmt.Println("Вы выбрали второй валютой евро")
-		case "RUB":
-			fmt.Println("Вы выбрали второй валютой рубли")
-		default:
-			fmt.Println("Выберите вторую валюту:")
-			fmt.Scan(&firstVal)
-		}
-
-		break
-	}
+func summConverter(firstVal string, value float64, lastVal string) float64 {
+	var sum float64
 
 	if firstVal == "USD" && lastVal == "EUR" {
 		sum = (USD / 1.16) * value
-		return
 	} else if firstVal == "USD" && lastVal == "RUB" {
 		sum = (USD * 72.14) * value
-		return
 	} else if firstVal == "EUR" && lastVal == "USD" {
 		sum = (USD * 1.16) * value
-		return
 	} else if firstVal == "EUR" && lastVal == "RUB" {
 		sum = (USD * 72.14 * 1.16) * value
-		return
 	} else if firstVal == "RUB" && lastVal == "USD" {
 		sum = (USD / 72.14) * value
-		return
 	} else if firstVal == "RUB" && lastVal == "EUR" {
 		sum = (USD / (72.14 * 1.16)) * value
-		return
 	}
 
-	return
-
+	return sum
 }
